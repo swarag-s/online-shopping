@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Cart — ShopEasy</title>
+  <meta name="description" content="Review your cart and checkout on ShopEasy."/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="container page-body">
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span>›</span>
+    <a href="products.html">Products</a><span>›</span>
+    <span>My Cart</span>
+  </div>
+
+  <h1 style="font-size:1.4rem;font-weight:800;margin-bottom:1.25rem;">
+    My Cart <span id="cart-heading-count" style="font-size:1rem;font-weight:500;color:var(--text-muted);"></span>
+  </h1>
+
+  <div class="cart-layout" id="cart-main">
+    <!-- filled by JS -->
+  </div>
+
+</div>
+
+<footer style="background:var(--text);color:rgba(255,255,255,0.5);padding:1.5rem;text-align:center;font-size:0.8rem;margin-top:2rem;">
+  © 2025 <strong style="color:#fff;">ShopEasy</strong> — All rights reserved.
+</footer>
+
+<script src="app.js"></script>
+<script>
+  requireAuth();
+  document.getElementById("site-header").innerHTML = buildHeader("cart");
+  updateCartCount();
+
+  const user = getUser();
+
+  function renderCart() {
+    const cart = getCart();
+    const main = document.getElementById("cart-main");
+    const countEl = document.getElementById("cart-heading-count");
+    updateCartCount();
+
+    if (!cart.length) {
+      countEl.textContent = "";
+      main.innerHTML = `
+        <div style="grid-column:1/-1;">
+          <div class="empty-state">
+            <div class="empty-icon">🛒</div>
+            <h3>Your cart is empty</h3>
+            <p>Looks like you haven't added anything yet.</p>
+            <a href="products.html" class="btn btn-green btn-lg">Continue Shopping</a>
+          </div>
+        </div>`;
+      return;
+    }
+
+    const total    = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const mrpTotal = cart.reduce((s, i) => s + getMRP(i.price) * i.qty, 0);
+    const savings  = mrpTotal - total;
+    const itemCount = cart.reduce((s, i) => s + i.qty, 0);
+    countEl.textContent = `(${itemCount} item${itemCount > 1 ? "s" : ""})`;
+
+    main.innerHTML = `
+      <!-- LEFT: item list -->
+      <div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem 1.25rem;margin-bottom:.85rem;font-size:.82rem;color:var(--green-dark);font-weight:600;box-shadow:var(--shadow-sm);">
+          🚚 Free delivery on this order!
+        </div>
+
+        ${cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-thumb">${getIcon(item.id)}</div>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-meta">MRP: <span style="text-decoration:line-through;">${rupee(getMRP(item.price))}</span> &nbsp; <span style="color:var(--red);font-weight:600;">${getDiscount(item.price)}% off</span></div>
+            <div class="cart-item-meta" style="color:var(--green);font-weight:600;margin-top:2px;">In Stock</div>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+              <span class="qty-num">${item.qty}</span>
+              <button class="qty-btn" onclick="changeQty(${item.id},+1)">+</button>
+              <button onclick="removeItem(${item.id})" style="margin-left:.5rem;font-size:.78rem;color:var(--text-muted);text-decoration:underline;cursor:pointer;background:none;border:none;">Remove</button>
+            </div>
+          </div>
+          <div class="cart-item-price">
+            <div>${rupee(item.price * item.qty)}</div>
+            <div style="font-size:.75rem;color:var(--text-muted);font-weight:400;text-align:right;">${rupee(item.price)} each</div>
+          </div>
+        </div>`).join("")}
+      </div>
+
+      <!-- RIGHT: summary -->
+      <div>
+        <div class="order-summary">
+          <h3>Price Details</h3>
+          <div class="summary-line"><span>Price (${itemCount} items)</span><span>${rupee(mrpTotal)}</span></div>
+          <div class="summary-line"><span>Discount</span><span style="color:var(--green);">− ${rupee(savings)}</span></div>
+          <div class="summary-line"><span>Delivery Charges</span><span style="color:var(--green);">FREE</span></div>
+          <div class="summary-total"><span>Total Amount</span><span>${rupee(total)}</span></div>
+          <div class="saving-note">🎉 You save ${rupee(savings)} on this order!</div>
+          <button class="btn btn-green btn-full btn-lg" style="margin-top:1rem;" onclick="placeOrder()" id="btn-place">
+            Place Order
+          </button>
+          <button onclick="window.location.href='products.html'" class="btn btn-ghost btn-full" style="margin-top:.6rem;font-size:.82rem;">
+            ← Continue Shopping
+          </button>
+        </div>
+
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-top:.85rem;font-size:.8rem;color:var(--text-muted);box-shadow:var(--shadow-sm);">
+          <div style="font-weight:700;color:var(--text);margin-bottom:.5rem;">Safe & Secure Payments</div>
+          🔒 Your payment info is encrypted and never stored.<br/>
+          ↩️ Easy 7-day returns on all items.
+        </div>
+      </div>`;
+  }
+
+  function changeQty(id, delta) {
+    const cart = getCart();
+    const item = cart.find(i => i.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty < 1) { removeItem(id); return; }
+    if (item.qty > item.stock) { showToast("Maximum stock reached", "error"); item.qty = item.stock; }
+    setCart(cart);
+    renderCart();
+  }
+
+  function removeItem(id) {
+    setCart(getCart().filter(i => i.id !== id));
+    renderCart();
+  }
+
+  async function placeOrder() {
+    const cart = getCart();
+    if (!cart.length) return;
+    const btn = document.getElementById("btn-place");
+    btn.disabled = true; btn.textContent = "Placing your order...";
+
+    let allOk = true;
+    for (const item of cart) {
+      try {
+        const res = await fetch(`${API}/orders`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ customer_id: user.id, product_id: item.id, quantity: item.qty })
+        });
+        if (!res.ok) {
+          const d = await res.json();
+          showToast(`${item.name}: ${d.error}`, "error");
+          allOk = false;
+        }
+      } catch { showToast("Connection error", "error"); allOk = false; }
+    }
+
+    btn.disabled = false; btn.textContent = "Place Order";
+
+    if (allOk) {
+      setCart([]);
+      showToast("Order placed successfully! 🎉", "success");
+      setTimeout(() => window.location.href = "history.html", 1000);
+    }
+  }
+
+  renderCart();
+</script>
+</body>
+</html>

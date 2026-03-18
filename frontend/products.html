@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Products — ShopEasy</title>
+  <meta name="description" content="Browse all products on ShopEasy. Best prices, fast delivery."/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .products-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    
+    /* sidebar */
+    .sidebar {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 90px;
+    }
+    .sidebar h3 { 
+      font-size: 0.85rem; 
+      font-weight: 700; 
+      text-transform: uppercase; 
+      letter-spacing: .08em; 
+      color: var(--text-muted); 
+      margin-bottom: 1rem; 
+    }
+    .sidebar-divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
+    
+    /* custom filters */
+    .filter-option { 
+      display: flex; 
+      align-items: center; 
+      gap: 10px; 
+      margin-bottom: 0.75rem; 
+      cursor: pointer; 
+      font-size: 0.9rem;
+      color: var(--text-2);
+      transition: color var(--t);
+    }
+    .filter-option:hover { color: var(--text); }
+    
+    /* custom radio/checkbox styling */
+    .filter-option input {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      border: 2px solid var(--border-2);
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--t);
+      background: var(--white);
+      flex-shrink: 0;
+    }
+    .filter-option input[type="radio"] { border-radius: 50%; }
+    .filter-option input:checked { border-color: var(--green); background: var(--green); }
+    .filter-option input:checked::after { content: ""; display: block; }
+    .filter-option input[type="radio"]:checked::after { width: 8px; height: 8px; border-radius: 50%; background: white; }
+    .filter-option input[type="checkbox"]:checked::after { width: 5px; height: 10px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); margin-bottom: 2px; }
+
+    .sort-select { 
+      width: auto; 
+      min-width: 200px;
+      padding: 0.6rem 0.8rem; 
+      border: 1.5px solid var(--border-2); 
+      border-radius: var(--radius-sm); 
+      font-size: 0.88rem; 
+      outline: none; 
+      cursor: pointer;
+      background: var(--white);
+    }
+    .sort-select:focus { border-color: var(--green); }
+
+    /* results bar */
+    .results-bar {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .results-bar .count { color: var(--text-muted); }
+    .results-bar .count strong { color: var(--text); font-weight: 700; }
+    
+    .active-filter {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--green-light); color: var(--green-dark);
+      border: 1px solid var(--green-mid);
+      border-radius: 20px; padding: 4px 12px; font-size: 0.78rem; font-weight: 600;
+      margin-left: 10px;
+    }
+    .active-filter button { 
+      color: var(--green-dark); font-weight: 700; font-size: 1rem; 
+      cursor: pointer; background: none; border: none; line-height: 1; 
+      opacity: 0.7; transition: opacity var(--t);
+    }
+    .active-filter button:hover { opacity: 1; }
+
+    @media(max-width:850px) {
+      .products-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .results-bar { flex-direction: column; gap: 1rem; align-items: stretch; }
+      .sort-select { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="container page-body">
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span>›</span>
+    <span>All Products</span>
+  </div>
+
+  <div class="products-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <h3>Filters</h3>
+
+      <div>
+        <h3 style="margin-bottom:.6rem;">Price Range</h3>
+        <label class="filter-option"><input type="radio" name="price" value="all" checked onchange="applyFilters()"/><label>All prices</label></label>
+        <label class="filter-option"><input type="radio" name="price" value="0-500" onchange="applyFilters()"/><label>Under ₹500</label></label>
+        <label class="filter-option"><input type="radio" name="price" value="500-1000" onchange="applyFilters()"/><label>₹500 – ₹1,000</label></label>
+        <label class="filter-option"><input type="radio" name="price" value="1000-2000" onchange="applyFilters()"/><label>₹1,000 – ₹2,000</label></label>
+        <label class="filter-option"><input type="radio" name="price" value="2000-99999" onchange="applyFilters()"/><label>Above ₹2,000</label></label>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <div>
+        <h3 style="margin-bottom:.6rem;">Availability</h3>
+        <label class="filter-option"><input type="checkbox" id="filter-instock" onchange="applyFilters()"/><label for="filter-instock">In Stock Only</label></label>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <button class="btn btn-ghost btn-full btn-sm" onclick="clearFilters()">Clear All Filters</button>
+    </aside>
+
+    <!-- MAIN -->
+    <div>
+      <div class="results-bar">
+        <div class="count"><strong id="result-count">0</strong> products found <span id="search-tag"></span></div>
+        <select class="sort-select" id="sort-select" onchange="applyFilters()">
+          <option value="default">Sort: Recommended</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name">Name: A–Z</option>
+        </select>
+      </div>
+
+      <div id="product-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer style="background:var(--text);color:rgba(255,255,255,0.5);padding:1.5rem;text-align:center;font-size:0.8rem;margin-top:2rem;">
+  © 2025 <strong style="color:#fff;">ShopEasy</strong> — All rights reserved.
+</footer>
+
+<script src="app.js"></script>
+<script>
+  requireAuth();
+  document.getElementById("site-header").innerHTML = buildHeader("products");
+  updateCartCount();
+
+  let ALL_PRODUCTS = [];
+
+  // check for search query in URL
+  const urlQ = new URLSearchParams(location.search).get("q") || "";
+  if (urlQ) {
+    const tag = document.getElementById("search-tag");
+    tag.innerHTML = `&nbsp;<span class="active-filter">Search: "${urlQ}" <button onclick="clearSearch()">×</button></span>`;
+    document.getElementById("search-input") && (document.getElementById("search-input").value = urlQ);
+  }
+
+  function clearSearch() { window.location.href = "products.html"; }
+
+  async function loadProducts() {
+    try {
+      const res = await fetch(`${API}/products`);
+      ALL_PRODUCTS = await res.json();
+      applyFilters();
+    } catch {
+      document.getElementById("product-container").innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📡</div>
+          <h3>Server not reachable</h3>
+          <p>Make sure the backend server is running, then refresh.</p>
+        </div>`;
+    }
+  }
+
+  function applyFilters() {
+    let list = [...ALL_PRODUCTS];
+
+    // search filter
+    if (urlQ) list = list.filter(p => p.name.toLowerCase().includes(urlQ.toLowerCase()));
+
+    // price filter
+    const priceVal = document.querySelector('input[name="price"]:checked')?.value || "all";
+    if (priceVal !== "all") {
+      const [lo, hi] = priceVal.split("-").map(Number);
+      list = list.filter(p => p.price >= lo && p.price <= hi);
+    }
+
+    // in-stock filter
+    if (document.getElementById("filter-instock")?.checked) {
+      list = list.filter(p => p.stock > 0);
+    }
+
+    // sort
+    const sort = document.getElementById("sort-select").value;
+    if (sort === "price-asc")  list.sort((a, b) => a.price - b.price);
+    if (sort === "price-desc") list.sort((a, b) => b.price - a.price);
+    if (sort === "name")       list.sort((a, b) => a.name.localeCompare(b.name));
+
+    document.getElementById("result-count").textContent = list.length;
+    renderProducts(list);
+  }
+
+  function clearFilters() {
+    document.querySelectorAll('input[name="price"]')[0].checked = true;
+    document.getElementById("filter-instock").checked = false;
+    document.getElementById("sort-select").value = "default";
+    applyFilters();
+  }
+
+  function renderProducts(list) {
+    const container = document.getElementById("product-container");
+    if (!list.length) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <h3>No products found</h3>
+          <p>Try adjusting your filters or search term.</p>
+          <button class="btn btn-green" onclick="clearFilters()">Clear Filters</button>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = `<div class="product-grid">${list.map(p => {
+      const mrp  = getMRP(p.price);
+      const disc = getDiscount(p.price);
+      const stockClass = p.stock === 0 ? "red" : p.stock <= 10 ? "orange" : "green";
+      const stockLabel = p.stock === 0 ? "Out of Stock" : p.stock <= 10 ? `Only ${p.stock} left!` : "In Stock";
+      return `
+      <div class="product-card">
+        <div class="product-img">
+          ${p.stock > 0 ? `<span class="product-badge">${disc}% OFF</span>` : `<span class="product-badge" style="background:#9ca3af">Sold Out</span>`}
+          ${getIcon(p.id)}
+        </div>
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          <div class="product-rating">
+            <span class="stars">${renderStars(Number(getRating(p.id)))}</span>
+            ${getRating(p.id)} (${getReviews(p.id)})
+          </div>
+          <div class="product-price-row">
+            <span class="product-price">${rupee(p.price)}</span>
+            <span class="product-mrp">${rupee(mrp)}</span>
+            <span class="product-discount">${disc}% off</span>
+          </div>
+          <span class="product-stock-label ${stockClass}">${stockLabel}</span>
+        </div>
+        <button class="btn btn-green"
+          ${p.stock === 0 ? "disabled" : ""}
+          onclick='addToCart(${JSON.stringify(p)}); updateCartCount();'>
+          ${p.stock === 0 ? "Out of Stock" : "🛒 Add to Cart"}
+        </button>
+      </div>`;
+    }).join("")}</div>`;
+  }
+
+  loadProducts();
+</script>
+</body>
+</html>

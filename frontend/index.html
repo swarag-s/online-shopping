@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShopEasy — India's Favourite Online Store</title>
+  <meta name="description" content="Shop the best electronics, accessories and gadgets at unbeatable prices. Free delivery on orders above ₹999."/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── hero banner ── */
+    .hero {
+      background: linear-gradient(120deg, #1a5e3e 0%, #2e9e6b 55%, #3db87a 100%);
+      color: #fff;
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+    }
+    .hero-kicker {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; line-height: 1.2; margin-bottom: 0.75rem; }
+    .hero h1 span { color: #fcd34d; }
+    .hero p { font-size: 0.98rem; opacity: 0.88; max-width: 480px; margin: 0 auto 1.75rem; }
+    .hero-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .hero-btns .btn-white { background: #fff; color: var(--green-dark); font-weight: 700; padding: 0.75rem 1.8rem; }
+    .hero-btns .btn-white:hover { background: #f0fdf4; }
+    .hero-btns .btn-ghost-white { background: rgba(255,255,255,0.14); color: #fff; border: 1.5px solid rgba(255,255,255,0.4); padding: 0.75rem 1.8rem; }
+
+    /* ── banner strip ── */
+    .banner-strip {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+    .banner-strip-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .banner-item {
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.85rem 1rem;
+      border-right: 1px solid var(--border);
+      font-size: 0.82rem; font-weight: 500; color: var(--text-2);
+    }
+    .banner-item:last-child { border-right: none; }
+    .banner-item .bi { font-size: 1.4rem; }
+    .banner-item strong { display: block; font-size: 0.78rem; color: var(--text); }
+
+    /* ── category row ── */
+    .cat-grid {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.9rem;
+    }
+    .cat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 0.6rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--t);
+      box-shadow: var(--shadow-sm);
+    }
+    .cat-card:hover { border-color: var(--green); box-shadow: var(--shadow); transform: translateY(-2px); }
+    .cat-icon { font-size: 1.9rem; margin-bottom: 0.4rem; }
+    .cat-name { font-size: 0.75rem; font-weight: 600; color: var(--text-2); }
+
+    /* ── promo banners ── */
+    .promo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .promo-card {
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .promo-card::before {
+      content: attr(data-icon);
+      position: absolute;
+      top: -10px; right: 10px;
+      font-size: 5rem;
+      opacity: 0.22;
+    }
+    .promo-card h3 { font-size: 1.15rem; font-weight: 700; }
+    .promo-card p { font-size: 0.82rem; opacity: 0.85; margin: 4px 0 12px; }
+    .btn-promo { background: rgba(255,255,255,0.22); color: #fff; border: 1.5px solid rgba(255,255,255,0.5); padding: 6px 16px; font-size: 0.82rem; font-weight: 700; border-radius: 6px; display: inline-block; width: fit-content; transition: all var(--t); }
+    .btn-promo:hover { background: rgba(255,255,255,0.35); }
+
+    /* ── featured products ── */
+    .section { padding: 2.5rem 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    /* ── trust badges ── */
+    .trust-row { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; padding: 2.5rem 1rem; background: var(--green-light); border-top: 1px solid var(--green-mid); }
+    .trust-item { text-align: center; }
+    .trust-icon { font-size: 1.8rem; margin-bottom: 0.3rem; }
+    .trust-title { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+    .trust-sub { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* ── footer ── */
+    .footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.6);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+    .footer strong { color: #fff; }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,0.6); transition: color var(--t); }
+    .footer-links a:hover { color: var(--green); }
+
+    @media(max-width:768px) {
+      .banner-strip-inner { grid-template-columns: repeat(2,1fr); }
+      .cat-grid { grid-template-columns: repeat(3,1fr); }
+      .promo-grid { grid-template-columns: 1fr; }
+    }
+    @media(max-width:480px) { .cat-grid { grid-template-columns: repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<!-- HERO -->
+<section class="hero" style="text-align:left;">
+  <div class="container" style="display:flex; gap:3rem; align-items:center; flex-wrap:wrap;">
+    
+    <div style="flex:1; min-width:300px;">
+      <div class="hero-kicker">⚡ New arrivals every week</div>
+      <h1 style="text-align:left;">Shop Smart, <span>Save More</span><br/>Every Single Day</h1>
+      <p style="text-align:left; margin:0 0 1.75rem 0;">Discover thousands of products at prices that fit your budget. Free delivery. Easy returns. Always.</p>
+    </div>
+
+    <!-- AUTH BOX -->
+    <div id="home-auth-section" style="width:100%; max-width:400px; background:var(--white); border-radius:var(--radius-lg); padding:2rem; box-shadow:var(--shadow-lg); color:var(--text); margin:0 auto;">
+      
+      <div id="auth-forms">
+        <h2 style="font-size:1.25rem; font-weight:800; margin-bottom:0.25rem; text-align:center;">Welcome to ShopEasy</h2>
+        <p style="font-size:0.85rem; color:var(--text-muted); text-align:center; margin-bottom:1.5rem;">Sign in to start shopping</p>
+
+        <div class="auth-tabs" style="display:flex; background:var(--bg2); border-radius:var(--radius-sm); padding:3px; margin-bottom:1.5rem; gap:3px;">
+          <div class="auth-tab active" id="tab-login" onclick="switchHomeTab('login')">Sign In</div>
+          <div class="auth-tab" id="tab-reg" onclick="switchHomeTab('register')">Create Account</div>
+        </div>
+
+        <!-- LOGIN -->
+        <form id="form-login" onsubmit="doHomeLogin(event)">
+          <div class="form-group">
+            <label for="login-email">Email Address</label>
+            <input class="form-input" type="email" id="login-email" placeholder="you@example.com" required/>
+          </div>
+          <button class="btn btn-green btn-full" type="submit" id="btn-login" style="margin-top:0.5rem; padding:0.8rem; font-size:1rem;">Sign In →</button>
+        </form>
+
+        <!-- REGISTER -->
+        <form id="form-reg" onsubmit="doHomeReg(event)" style="display:none;">
+          <div class="form-group">
+            <label for="reg-name">Full Name</label>
+            <input class="form-input" type="text" id="reg-name" placeholder="John Doe" required/>
+          </div>
+          <div class="form-group">
+            <label for="reg-email">Email Address</label>
+            <input class="form-input" type="email" id="reg-email" placeholder="you@example.com" required/>
+          </div>
+          <button class="btn btn-green btn-full" type="submit" id="btn-reg" style="margin-top:0.5rem; padding:0.8rem; font-size:1rem;">Create Account →</button>
+        </form>
+      </div>
+
+      <!-- LOGGED IN VIEW -->
+      <div id="logged-in-view" style="display:none; text-align:center; padding: 1rem 0;">
+        <div style="font-size:3rem; margin-bottom:1rem;">👋</div>
+        <h3 style="font-size:1.2rem; margin-bottom:0.5rem;">Welcome back, <span id="home-user-name" style="color:var(--green);"></span>!</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;">Ready to find some great deals today?</p>
+        <a href="products.html" class="btn btn-green btn-full" style="margin-bottom:0.75rem; padding:0.8rem; font-size:1rem;">Continue Shopping →</a>
+        <a href="history.html" class="btn btn-outline-green btn-full" style="padding:0.8rem; font-size:1rem;">View My Orders</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- BANNER STRIP -->
+<div class="banner-strip">
+  <div class="banner-strip-inner">
+    <div class="banner-item"><span class="bi">🚚</span><div><strong>Free Delivery</strong>On orders above ₹999</div></div>
+    <div class="banner-item"><span class="bi">↩️</span><div><strong>Easy Returns</strong>7-day hassle-free return</div></div>
+    <div class="banner-item"><span class="bi">🔒</span><div><strong>Secure Payments</strong>100% safe checkout</div></div>
+    <div class="banner-item"><span class="bi">🎧</span><div><strong>24/7 Support</strong>Always here to help</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- CATEGORIES -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Shop by Category</h2>
+      <a href="products.html">View all →</a>
+    </div>
+    <div class="cat-grid">
+      <a href="products.html" class="cat-card"><div class="cat-icon">🎧</div><div class="cat-name">Audio</div></a>
+      <a href="products.html" class="cat-card"><div class="cat-icon">⌨️</div><div class="cat-name">Keyboards</div></a>
+      <a href="products.html" class="cat-card"><div class="cat-icon">📷</div><div class="cat-name">Cameras</div></a>
+      <a href="products.html" class="cat-card"><div class="cat-icon">🔌</div><div class="cat-name">Accessories</div></a>
+      <a href="products.html" class="cat-card"><div class="cat-icon">💡</div><div class="cat-name">Lighting</div></a>
+      <a href="products.html" class="cat-card"><div class="cat-icon">🖥️</div><div class="cat-name">Monitors</div></a>
+    </div>
+  </div>
+
+  <!-- PROMO BANNERS -->
+  <div class="section">
+    <div class="promo-grid">
+      <div class="promo-card" data-icon="⚡" style="background: linear-gradient(135deg, #2e9e6b, #1a5e3e);">
+        <h3>Today's Flash Deals</h3>
+        <p>Up to 40% off on selected items</p>
+        <a href="products.html" class="btn-promo">Grab Deals</a>
+      </div>
+      <div class="promo-card" data-icon="🎁" style="background: linear-gradient(135deg, #d97706, #92400e);">
+        <h3>Gift Cards Available</h3>
+        <p>Perfect gifting solution for everyone</p>
+        <a href="products.html" class="btn-promo">Shop Gifts</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURED PRODUCTS -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Featured Products</h2>
+      <a href="products.html">See all →</a>
+    </div>
+    <div id="featured-container">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- TRUST -->
+<div class="trust-row">
+  <div class="trust-item"><div class="trust-icon">🏅</div><div class="trust-title">Quality Assured</div><div class="trust-sub">All products verified</div></div>
+  <div class="trust-item"><div class="trust-icon">🚀</div><div class="trust-title">Fast Shipping</div><div class="trust-sub">Delivered in 2–5 days</div></div>
+  <div class="trust-item"><div class="trust-icon">💬</div><div class="trust-title">Real Reviews</div><div class="trust-sub">From verified buyers</div></div>
+  <div class="trust-item"><div class="trust-icon">🔄</div><div class="trust-title">Easy Exchange</div><div class="trust-sub">Hassle-free returns</div></div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="cart.html">Cart</a>
+    <a href="history.html">Orders</a>
+    <a href="login.html">Account</a>
+  </div>
+  <div>© 2025 <strong>ShopEasy</strong> — All rights reserved.</div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  // ----- Auth Logic for Home Page -----
+  function switchHomeTab(tab) {
+    const isLogin = tab === "login";
+    document.getElementById("tab-login").classList.toggle("active", isLogin);
+    document.getElementById("tab-reg").classList.toggle("active", !isLogin);
+    document.getElementById("form-login").style.display = isLogin ? "" : "none";
+    document.getElementById("form-reg").style.display   = isLogin ? "none" : "";
+  }
+
+  async function doHomeLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value.trim();
+    const btn   = document.getElementById("btn-login");
+    btn.disabled = true; btn.textContent = "Signing in...";
+    try {
+      const res  = await fetch(`${API}/auth/login`, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ email }) });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.error || "Sign in failed", "error"); return; }
+      setUser(data);
+      showToast(`Welcome back, ${data.name}!`, "success");
+      updateHomeAuthUI();
+      document.getElementById("site-header").innerHTML = buildHeader("home");
+      updateCartCount();
+    } catch { showToast("Cannot connect. Is server running?", "error"); }
+    finally  { btn.disabled = false; btn.textContent = "Sign In →"; }
+  }
+
+  async function doHomeReg(e) {
+    e.preventDefault();
+    const name  = document.getElementById("reg-name").value.trim();
+    const email = document.getElementById("reg-email").value.trim();
+    const btn   = document.getElementById("btn-reg");
+    btn.disabled = true; btn.textContent = "Creating account...";
+    try {
+      const res  = await fetch(`${API}/auth/register`, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ name, email }) });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.error || "Registration failed", "error"); return; }
+      showToast("Account created! Logging you in...", "success");
+      
+      const loginRes = await fetch(`${API}/auth/login`, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ email }) });
+      const loginData = await loginRes.json();
+      setUser(loginData);
+      updateHomeAuthUI();
+      document.getElementById("site-header").innerHTML = buildHeader("home");
+      updateCartCount();
+    } catch { showToast("Cannot connect. Is server running?", "error"); }
+    finally  { btn.disabled = false; btn.textContent = "Create Account →"; }
+  }
+
+  function updateHomeAuthUI() {
+    const currUser = getUser();
+    if (currUser) {
+      document.getElementById("auth-forms").style.display = "none";
+      document.getElementById("logged-in-view").style.display = "block";
+      document.getElementById("home-user-name").textContent = currUser.name.split(" ")[0];
+    } else {
+      document.getElementById("auth-forms").style.display = "block";
+      document.getElementById("logged-in-view").style.display = "none";
+    }
+  }
+
+  document.getElementById("site-header").innerHTML = buildHeader("home");
+  updateCartCount();
+  updateHomeAuthUI();
+
+  // load 6 featured products from API
+  async function loadFeatured() {
+    const container = document.getElementById("featured-container");
+    try {
+      const res = await fetch(`${API}/products`);
+      const products = await res.json();
+      const featured = products.slice(0, 6);
+
+      if (!featured.length) {
+        container.innerHTML = `<p style="color:var(--text-muted);text-align:center;padding:2rem;">No products available.</p>`;
+        return;
+      }
+
+      container.innerHTML = `<div class="product-grid">${featured.map(p => {
+        const mrp  = getMRP(p.price);
+        const disc = getDiscount(p.price);
+        const icon = getIcon(p.id);
+        const rating = getRating(p.id);
+        const reviews = getReviews(p.id);
+        const stockClass = p.stock === 0 ? "red" : p.stock <= 10 ? "orange" : "green";
+        const stockLabel = p.stock === 0 ? "Out of Stock" : p.stock <= 10 ? `Only ${p.stock} left!` : "In Stock";
+        return `
+        <div class="product-card">
+          <div class="product-img">
+            ${p.stock > 0 ? `<span class="product-badge">${disc}% OFF</span>` : `<span class="product-badge" style="background:var(--text-muted)">Sold Out</span>`}
+            ${icon}
+          </div>
+          <div class="product-info">
+            <div class="product-name">${p.name}</div>
+            <div class="product-rating">
+              <span class="stars">${renderStars(Number(rating))}</span>
+              ${rating} (${reviews})
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">${rupee(p.price)}</span>
+              <span class="product-mrp">${rupee(mrp)}</span>
+              <span class="product-discount">${disc}% off</span>
+            </div>
+            <span class="product-stock-label ${stockClass}">${stockLabel}</span>
+          </div>
+          <button class="btn btn-green"
+            ${p.stock === 0 ? "disabled" : ""}
+            onclick='addToCart(${JSON.stringify(p)}); updateCartCount();'>
+            ${p.stock === 0 ? "Out of Stock" : "Add to Cart"}
+          </button>
+        </div>`;
+      }).join("")}</div>`;
+    } catch {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📡</div>
+          <h3>Could not load products</h3>
+          <p>Make sure the server is running.</p>
+        </div>`;
+    }
+  }
+
+  loadFeatured();
+</script>
+</body>
+</html>
