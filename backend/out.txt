@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Content-Type: application/json; charset=utf-8
+Content-Length: 338
+ETag: W/"152-T1O8a5SgzIKKOX4XnamyFZTNFAc"
+Date: Thu, 19 Mar 2026 16:15:20 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+[{"id":1,"name":"Wireless Headphones","price":1299,"stock":50},{"id":2,"name":"Mechanical Keyboard","price":2499,"stock":30},{"id":3,"name":"USB-C Hub","price":899,"stock":75},{"id":4,"name":"Webcam HD","price":1599,"stock":40},{"id":5,"name":"Mouse Pad XL","price":399,"stock":100},{"id":6,"name":"LED Desk Lamp","price":699,"stock":60}]
