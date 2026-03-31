@@ -6,6 +6,7 @@
   <title>All Products — ShopEasy</title>
   <meta name="description" content="Browse all products on ShopEasy. Best prices, fast delivery."/>
   <link rel="stylesheet" href="style.css"/>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     .products-layout {
       display: grid;
@@ -202,14 +203,18 @@
   async function loadProducts() {
     try {
       const res = await fetch(`${API}/products`);
+      if (!res.ok) throw new Error("HTTP error " + res.status);
       ALL_PRODUCTS = await res.json();
+      if (!Array.isArray(ALL_PRODUCTS)) throw new Error("API did not return an array");
       applyFilters();
-    } catch {
+    } catch (err) {
+      console.error("Products load error:", err);
       document.getElementById("product-container").innerHTML = `
         <div class="empty-state">
-          <div class="empty-icon">📡</div>
+          <div class="empty-icon"><i class="ph ph-wifi-slash" style="font-size: 3rem;"></i></div>
           <h3>Server not reachable</h3>
-          <p>Make sure the backend server is running, then refresh.</p>
+          <p>Error details: ${err.message}</p>
+          <p>Please make sure you are accessing via <b>http://localhost:3000</b></p>
         </div>`;
     }
   }
@@ -254,7 +259,7 @@
     if (!list.length) {
       container.innerHTML = `
         <div class="empty-state">
-          <div class="empty-icon">🔍</div>
+          <div class="empty-icon"><i class="ph ph-magnifying-glass" style="font-size: 3rem;"></i></div>
           <h3>No products found</h3>
           <p>Try adjusting your filters or search term.</p>
           <button class="btn btn-green" onclick="clearFilters()">Clear Filters</button>
@@ -289,7 +294,7 @@
         <button class="btn btn-green"
           ${p.stock === 0 ? "disabled" : ""}
           onclick='addToCart(${JSON.stringify(p)}); updateCartCount();'>
-          ${p.stock === 0 ? "Out of Stock" : "🛒 Add to Cart"}
+          ${p.stock === 0 ? "Out of Stock" : "<i class='ph ph-shopping-cart' style='vertical-align:middle;'></i> Add to Cart"}
         </button>
       </div>`;
     }).join("")}</div>`;

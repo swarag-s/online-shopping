@@ -172,15 +172,12 @@ server running on http://localhost:3000
 
 ### Step 7 — Open the Home Page
 
-1. Open **File Explorer** and go to:
-   ```
-   C:\Users\onew2\Desktop\dbms project\frontend\
-   ```
-2. Double-click **`index.html`** — it opens in your browser.
+1. Open your web browser (Chrome, Edge, etc.).
+2. Go to this URL: **[http://localhost:3000](http://localhost:3000)**
 
 **Expected result:**  
 - A clean white & green home page loads.
-- The stats bar shows **6 Products**, **0 Orders**, **0 Customers** (live from DB).
+- The stats bar shows featured products (live from DB).
 
 ---
 
@@ -341,7 +338,7 @@ rem 2. start the server
 node server.js
 
 rem 3. open home page
-start "" "C:\Users\onew2\Desktop\dbms project\frontend\index.html"
+start http://localhost:3000
 ```
 
 ---

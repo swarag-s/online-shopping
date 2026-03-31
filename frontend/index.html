@@ -6,6 +6,7 @@
   <title>ShopEasy — India's Favourite Online Store</title>
   <meta name="description" content="Shop the best electronics, accessories and gadgets at unbeatable prices. Free delivery on orders above ₹999."/>
   <link rel="stylesheet" href="style.css"/>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     /* ── hero banner ── */
     .hero {
@@ -85,8 +86,7 @@
       flex-direction: column;
       justify-content: flex-end;
     }
-    .promo-card::before {
-      content: attr(data-icon);
+    .promo-icon {
       position: absolute;
       top: -10px; right: 10px;
       font-size: 5rem;
@@ -137,7 +137,7 @@
   <div class="container" style="display:flex; gap:3rem; align-items:center; flex-wrap:wrap;">
     
     <div style="flex:1; min-width:300px;">
-      <div class="hero-kicker">⚡ New arrivals every week</div>
+      <div class="hero-kicker"><i class="ph ph-lightning"></i> New arrivals every week</div>
       <h1 style="text-align:left;">Shop Smart, <span>Save More</span><br/>Every Single Day</h1>
       <p style="text-align:left; margin:0 0 1.75rem 0;">Discover thousands of products at prices that fit your budget. Free delivery. Easy returns. Always.</p>
     </div>
@@ -179,7 +179,7 @@
 
       <!-- LOGGED IN VIEW -->
       <div id="logged-in-view" style="display:none; text-align:center; padding: 1rem 0;">
-        <div style="font-size:3rem; margin-bottom:1rem;">👋</div>
+        <div style="font-size:3rem; margin-bottom:1rem;"><i class="ph ph-hand-waving"></i></div>
         <h3 style="font-size:1.2rem; margin-bottom:0.5rem;">Welcome back, <span id="home-user-name" style="color:var(--green);"></span>!</h3>
         <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;">Ready to find some great deals today?</p>
         <a href="products.html" class="btn btn-green btn-full" style="margin-bottom:0.75rem; padding:0.8rem; font-size:1rem;">Continue Shopping →</a>
@@ -193,10 +193,10 @@
 <!-- BANNER STRIP -->
 <div class="banner-strip">
   <div class="banner-strip-inner">
-    <div class="banner-item"><span class="bi">🚚</span><div><strong>Free Delivery</strong>On orders above ₹999</div></div>
-    <div class="banner-item"><span class="bi">↩️</span><div><strong>Easy Returns</strong>7-day hassle-free return</div></div>
-    <div class="banner-item"><span class="bi">🔒</span><div><strong>Secure Payments</strong>100% safe checkout</div></div>
-    <div class="banner-item"><span class="bi">🎧</span><div><strong>24/7 Support</strong>Always here to help</div></div>
+    <div class="banner-item"><span class="bi"><i class="ph ph-truck"></i></span><div><strong>Free Delivery</strong>On orders above ₹999</div></div>
+    <div class="banner-item"><span class="bi"><i class="ph ph-arrow-counter-clockwise"></i></span><div><strong>Easy Returns</strong>7-day hassle-free return</div></div>
+    <div class="banner-item"><span class="bi"><i class="ph ph-lock-key"></i></span><div><strong>Secure Payments</strong>100% safe checkout</div></div>
+    <div class="banner-item"><span class="bi"><i class="ph ph-headphones"></i></span><div><strong>24/7 Support</strong>Always here to help</div></div>
   </div>
 </div>
 
@@ -209,24 +209,26 @@
       <a href="products.html">View all →</a>
     </div>
     <div class="cat-grid">
-      <a href="products.html" class="cat-card"><div class="cat-icon">🎧</div><div class="cat-name">Audio</div></a>
-      <a href="products.html" class="cat-card"><div class="cat-icon">⌨️</div><div class="cat-name">Keyboards</div></a>
-      <a href="products.html" class="cat-card"><div class="cat-icon">📷</div><div class="cat-name">Cameras</div></a>
-      <a href="products.html" class="cat-card"><div class="cat-icon">🔌</div><div class="cat-name">Accessories</div></a>
-      <a href="products.html" class="cat-card"><div class="cat-icon">💡</div><div class="cat-name">Lighting</div></a>
-      <a href="products.html" class="cat-card"><div class="cat-icon">🖥️</div><div class="cat-name">Monitors</div></a>
+      <a href="products.html" class="cat-card"><div class="cat-icon"><i class="ph ph-headphones"></i></div><div class="cat-name">Audio</div></a>
+      <a href="products.html" class="cat-card"><div class="cat-icon"><i class="ph ph-keyboard"></i></div><div class="cat-name">Keyboards</div></a>
+      <a href="products.html" class="cat-card"><div class="cat-icon"><i class="ph ph-camera"></i></div><div class="cat-name">Cameras</div></a>
+      <a href="products.html" class="cat-card"><div class="cat-icon"><i class="ph ph-plug"></i></div><div class="cat-name">Accessories</div></a>
+      <a href="products.html" class="cat-card"><div class="cat-icon"><i class="ph ph-lightbulb"></i></div><div class="cat-name">Lighting</div></a>
+      <a href="products.html" class="cat-card"><div class="cat-icon"><i class="ph ph-desktop"></i></div><div class="cat-name">Monitors</div></a>
     </div>
   </div>
 
   <!-- PROMO BANNERS -->
   <div class="section">
     <div class="promo-grid">
-      <div class="promo-card" data-icon="⚡" style="background: linear-gradient(135deg, #2e9e6b, #1a5e3e);">
+      <div class="promo-card" style="background: linear-gradient(135deg, #2e9e6b, #1a5e3e);">
+        <div class="promo-icon"><i class="ph ph-lightning"></i></div>
         <h3>Today's Flash Deals</h3>
         <p>Up to 40% off on selected items</p>
         <a href="products.html" class="btn-promo">Grab Deals</a>
       </div>
-      <div class="promo-card" data-icon="🎁" style="background: linear-gradient(135deg, #d97706, #92400e);">
+      <div class="promo-card" style="background: linear-gradient(135deg, #d97706, #92400e);">
+        <div class="promo-icon"><i class="ph ph-gift"></i></div>
         <h3>Gift Cards Available</h3>
         <p>Perfect gifting solution for everyone</p>
         <a href="products.html" class="btn-promo">Shop Gifts</a>
@@ -249,10 +251,10 @@
 
 <!-- TRUST -->
 <div class="trust-row">
-  <div class="trust-item"><div class="trust-icon">🏅</div><div class="trust-title">Quality Assured</div><div class="trust-sub">All products verified</div></div>
-  <div class="trust-item"><div class="trust-icon">🚀</div><div class="trust-title">Fast Shipping</div><div class="trust-sub">Delivered in 2–5 days</div></div>
-  <div class="trust-item"><div class="trust-icon">💬</div><div class="trust-title">Real Reviews</div><div class="trust-sub">From verified buyers</div></div>
-  <div class="trust-item"><div class="trust-icon">🔄</div><div class="trust-title">Easy Exchange</div><div class="trust-sub">Hassle-free returns</div></div>
+  <div class="trust-item"><div class="trust-icon"><i class="ph ph-medal"></i></div><div class="trust-title">Quality Assured</div><div class="trust-sub">All products verified</div></div>
+  <div class="trust-item"><div class="trust-icon"><i class="ph ph-rocket"></i></div><div class="trust-title">Fast Shipping</div><div class="trust-sub">Delivered in 2–5 days</div></div>
+  <div class="trust-item"><div class="trust-icon"><i class="ph ph-chat-circle"></i></div><div class="trust-title">Real Reviews</div><div class="trust-sub">From verified buyers</div></div>
+  <div class="trust-item"><div class="trust-icon"><i class="ph ph-arrows-clockwise"></i></div><div class="trust-title">Easy Exchange</div><div class="trust-sub">Hassle-free returns</div></div>
 </div>
 
 <!-- FOOTER -->
@@ -384,7 +386,7 @@
     } catch {
       container.innerHTML = `
         <div class="empty-state">
-          <div class="empty-icon">📡</div>
+          <div class="empty-icon"><i class="ph ph-wifi-slash"></i></div>
           <h3>Could not load products</h3>
           <p>Make sure the server is running.</p>
         </div>`;

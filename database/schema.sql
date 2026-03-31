@@ -54,11 +54,21 @@ BEGIN
 END$$
 DELIMITER ;
 
--- sample products (so the shop is not empty)
+-- sample products 
 INSERT INTO products (name, price, stock) VALUES
-  ('Wireless Headphones', 1299, 50),
+  ('Wireless Headphones', 1209 ,50),
   ('Mechanical Keyboard', 2499, 30),
   ('USB-C Hub', 899, 75),
   ('Webcam HD', 1599, 40),
   ('Mouse Pad XL', 399, 100),
-  ('LED Desk Lamp', 699, 60);
+  ('LED Desk Lamp', 699, 60),
+  ('Gaming Monitor 4K', 29999, 15),
+  ('Bluetooth Speaker', 1299, 85),
+  ('Wireless Mouse', 899, 120),
+  ('Laptop Cooling Pad', 1499, 45),
+  ('Ergonomic Desk Chair', 7500, 20),
+  ('Smartphone Stand', 299, 200),
+  ('Noise Cancelling Earbuds', 4999, 40),
+  ('1TB Portable SSD', 8999, 35),
+  ('Power Strip Surge Protector', 599, 150),
+  ('Adjustable Standing Desk', 15999, 10);

@@ -8,6 +8,7 @@ router.get("/", (req, res) => {
       console.error("Products query error:", err);
       return res.status(500).json({ error: "failed to fetch products" });
     }
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
     res.json(result);
   });
 });

@@ -6,6 +6,7 @@
   <title>My Cart — ShopEasy</title>
   <meta name="description" content="Review your cart and checkout on ShopEasy."/>
   <link rel="stylesheet" href="style.css"/>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
 <div id="site-header"></div>
@@ -51,7 +52,7 @@
       main.innerHTML = `
         <div style="grid-column:1/-1;">
           <div class="empty-state">
-            <div class="empty-icon">🛒</div>
+            <div class="empty-icon"><i class="ph ph-shopping-cart" style="font-size: 3rem;"></i></div>
             <h3>Your cart is empty</h3>
             <p>Looks like you haven't added anything yet.</p>
             <a href="products.html" class="btn btn-green btn-lg">Continue Shopping</a>
@@ -70,7 +71,7 @@
       <!-- LEFT: item list -->
       <div>
         <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem 1.25rem;margin-bottom:.85rem;font-size:.82rem;color:var(--green-dark);font-weight:600;box-shadow:var(--shadow-sm);">
-          🚚 Free delivery on this order!
+          <i class="ph ph-truck" style="font-size: 1.1rem; vertical-align: middle;"></i> Free delivery on this order!
         </div>
 
         ${cart.map(item => `
@@ -102,7 +103,7 @@
           <div class="summary-line"><span>Discount</span><span style="color:var(--green);">− ${rupee(savings)}</span></div>
           <div class="summary-line"><span>Delivery Charges</span><span style="color:var(--green);">FREE</span></div>
           <div class="summary-total"><span>Total Amount</span><span>${rupee(total)}</span></div>
-          <div class="saving-note">🎉 You save ${rupee(savings)} on this order!</div>
+          <div class="saving-note"><i class="ph ph-sparkle"></i> You save ${rupee(savings)} on this order!</div>
           <button class="btn btn-green btn-full btn-lg" style="margin-top:1rem;" onclick="placeOrder()" id="btn-place">
             Place Order
           </button>
@@ -113,8 +114,8 @@
 
         <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-top:.85rem;font-size:.8rem;color:var(--text-muted);box-shadow:var(--shadow-sm);">
           <div style="font-weight:700;color:var(--text);margin-bottom:.5rem;">Safe & Secure Payments</div>
-          🔒 Your payment info is encrypted and never stored.<br/>
-          ↩️ Easy 7-day returns on all items.
+          <i class="ph ph-lock-key"></i> Your payment info is encrypted and never stored.<br/>
+          <i class="ph ph-arrow-counter-clockwise"></i> Easy 7-day returns on all items.
         </div>
       </div>`;
   }
@@ -161,12 +162,37 @@
 
     if (allOk) {
       setCart([]);
-      showToast("Order placed successfully! 🎉", "success");
+      showToast("Order placed successfully!", "success");
       setTimeout(() => window.location.href = "history.html", 1000);
     }
   }
 
-  renderCart();
+  async function syncCartPrices() {
+    const cart = getCart();
+    if (!cart.length) return renderCart();
+    
+    try {
+      const res = await fetch(`${API}/products`);
+      if (res.ok) {
+        const products = await res.json();
+        let changed = false;
+        cart.forEach(item => {
+          const live = products.find(p => p.id === item.id);
+          if (live && (item.price !== live.price || item.name !== live.name)) {
+            item.price = live.price;
+            item.name = live.name;
+            changed = true;
+          }
+        });
+        if (changed) setCart(cart);
+      }
+    } catch(e) {
+      console.error("Could not sync prices:", e);
+    }
+    renderCart();
+  }
+
+  syncCartPrices();
 </script>
 </body>
 </html>

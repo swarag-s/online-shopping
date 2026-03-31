@@ -1,4 +1,4 @@
-const API = "http://localhost:3000";
+const API = "";
 
 /* ── session ── */
 function getUser() { try { return JSON.parse(localStorage.getItem("shop_user")); } catch { return null; } }
@@ -38,9 +38,9 @@ function showToast(msg, type = "success") {
   let c = document.querySelector(".toast-container");
   if (!c) { c = document.createElement("div"); c.className = "toast-container"; document.body.appendChild(c); }
   const t = document.createElement("div");
-  const icon = type === "success" ? "✓" : "✕";
+  const icon = type === "success" ? "<i class='ph ph-check-circle' style='font-size:1.1rem;'></i>" : "<i class='ph ph-x-circle' style='font-size:1.1rem;'></i>";
   t.className = `toast ${type}`;
-  t.innerHTML = `<span style="font-weight:700;">${icon}</span> ${msg}`;
+  t.innerHTML = `<span style="font-weight:700; display:flex; align-items:center;">${icon}</span> ${msg}`;
   c.appendChild(t);
   setTimeout(() => t.remove(), 3000);
 }
@@ -59,7 +59,7 @@ function buildHeader(activePage) {
 
       <div class="header-search">
         <input type="text" placeholder="Search products, brands and more..." id="search-input" onkeydown="handleSearch(event)" />
-        <button onclick="doSearch()">🔍</button>
+        <button onclick="doSearch()"><i class="ph ph-magnifying-glass"></i></button>
       </div>
 
       <div class="header-actions">
@@ -68,15 +68,15 @@ function buildHeader(activePage) {
           : `<a href="index.html#home-auth-section" class="btn btn-outline-green btn-sm">Login</a>`
         }
         <a href="cart.html" class="header-btn ${activePage === "cart" ? "active" : ""}">
-          <span class="icon">🛒</span>
+          <span class="icon"><i class="ph ph-shopping-cart"></i></span>
           <span>Cart</span>
           <span class="cart-count" id="cart-count" style="display:${cartN > 0 ? "block" : "none"}">${cartN}</span>
         </a>
         <a href="history.html" class="header-btn ${activePage === "history" ? "active" : ""}">
-          <span class="icon">📦</span>
+          <span class="icon"><i class="ph ph-package"></i></span>
           <span>Orders</span>
         </a>
-        ${user ? `<button class="header-btn" onclick="logout()"><span class="icon">🚪</span><span>Logout</span></button>` : ""}
+        ${user ? `<button class="header-btn" onclick="logout()"><span class="icon"><i class="ph ph-sign-out"></i></span><span>Logout</span></button>` : ""}
       </div>
     </div>
   </header>
@@ -100,10 +100,30 @@ function doSearch() {
 }
 
 /* ── product helpers ── */
-const PRODUCT_ICONS = ["🎧", "⌨️", "🔌", "📷", "🖱️", "💡", "📱", "🖥️", "💾", "🖨️", "📺", "🔋"];
+const PRODUCT_IMAGES = [
+  "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
+  "https://images.unsplash.com/photo-1595225476474-87563907a212?w=500&q=80",
+  "https://images.unsplash.com/photo-1626218174358-7769486c4b79?w=500&q=80",
+  "https://images.unsplash.com/photo-1599839619722-39751411ea63?w=500&q=80",
+  "https://images.unsplash.com/photo-1610792516307-ea5acd9c3b00?w=500&q=80",
+  "https://images.unsplash.com/photo-1517705008128-361805f42e86?w=500&q=80",
+  "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&q=80",
+  "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&q=80",
+  "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&q=80",
+  "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80",
+  "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?w=500&q=80",
+  "https://images.unsplash.com/photo-1586953208448-b95a79201389?w=500&q=80",
+  "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&q=80",
+  "https://images.unsplash.com/photo-1563208221-66c3038d17f4?w=500&q=80",
+  "https://images.unsplash.com/photo-1554522434-d0231ccf6eb2?w=500&q=80",
+  "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=500&q=80"
+];
 const FAKE_RATINGS  = [4.2, 4.5, 4.0, 4.7, 3.9, 4.3, 4.6, 4.1, 4.8, 4.4];
 
-function getIcon(id) { return PRODUCT_ICONS[(id - 1) % PRODUCT_ICONS.length]; }
+function getIcon(id) { 
+  const src = PRODUCT_IMAGES[(id - 1) % PRODUCT_IMAGES.length];
+  return `<img src="${src}" alt="Product" style="width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block;" />`;
+}
 function getRating(id) { return FAKE_RATINGS[(id - 1) % FAKE_RATINGS.length].toFixed(1); }
 function getMRP(price) { return Math.round(price * 1.25); }
 function getDiscount(price) { const mrp = getMRP(price); return Math.round((mrp - price) / mrp * 100); }
